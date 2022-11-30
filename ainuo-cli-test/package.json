@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.1.2",
     "dedent": "^0.7.0",
+    "ora": "^6.1.2",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
