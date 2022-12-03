@@ -23,8 +23,7 @@
     "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
   },
   "dependencies": {
-    "yargs": "^17.6.2",
-    "@ainuo5213testgroup/test-lerna-a": "1.0.0"
+    "yargs": "^17.6.2"
   },
   "type": "module",
   "bugs": {
