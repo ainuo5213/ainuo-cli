@@ -5,4 +5,6 @@
 
 // import("./ora.mjs");
 // require("./list");
-require("./readline");
+// require("./readline");
+// import("./rxjs.mjs");
+import("./list.mjs");
