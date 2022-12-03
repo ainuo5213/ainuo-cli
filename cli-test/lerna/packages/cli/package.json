@@ -1,0 +1,33 @@
+{
+  "name": "@ainuo5213testgroup/lerna-test-cli",
+  "version": "1.0.0",
+  "description": "@ainuo5213testgroup/lerna-test-cli",
+  "author": "孙永刚 <1660998482@qq.com>",
+  "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
+  "license": "ISC",
+  "main": "dist/cli.js",
+  "module": "dist/cli.module.js",
+  "bin": {
+    "lerna-test-cli": "bin/cli.mjs"
+  },
+  "directories": {
+    "lib": "dist",
+    "test": "__tests__"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
+  },
+  "dependencies": {
+    "yargs": "^17.6.2",
+    "@ainuo5213testgroup/test-lerna-a": "1.0.0"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ainuo5213/ainuo-cli/issues"
+  }
+}

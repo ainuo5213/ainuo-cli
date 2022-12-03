@@ -1,0 +1,19 @@
+{
+  "name": "@ainuotestgroup/test-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "bin": {
+    "imooc-test-cli": "bin/cli.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ainuotestgroup/test-a": "1.0.0",
+    "@ainuotestgroup/test-b": "1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
