@@ -1,4 +1,5 @@
-const Command = require("@ainuotestgroup/command");
+import Command from "@ainuotestgroup/command";
+import { log } from "@ainuotestgroup/utils";
 
 class InitCommand extends Command {
   get name() {
@@ -13,21 +14,19 @@ class InitCommand extends Command {
     return "初始化项目";
   }
 
-  action(option) {
-    console.log("init", option);
+  action(name, option) {
+    log.verbose("init", name, option);
   }
 
   preAction() {
-    console.log("pre");
+    log.success("pre");
   }
 
   postAction() {
-    console.log("post");
+    log.success("post");
   }
 }
 
-function init(program) {
+export default function init(program) {
   return new InitCommand(program);
 }
-
-module.exports = init;

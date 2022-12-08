@@ -25,5 +25,9 @@
   },
   "bugs": {
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
-  }
+  },
+  "dependencies": {
+    "@ainuotestgroup/utils": "^0.0.0"
+  },
+  "type": "module"
 }

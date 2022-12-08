@@ -1,7 +1,7 @@
 {
-  "name": "@ainuotestgroup/init-command",
+  "name": "@ainuotestgroup/utils",
   "version": "0.0.0",
-  "description": "init command",
+  "description": "utils",
   "author": "ainuo <ainuo@fanruan.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
   "license": "ISC",
@@ -21,14 +21,13 @@
     "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
   },
   "scripts": {
-    "test": "node ./__tests__/init-command.test.js"
+    "test": "node ./__tests__/utils.test.js"
   },
   "bugs": {
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuotestgroup/command": "^0.0.0",
-    "@ainuotestgroup/utils": "^0.0.0"
+    "npmlog": "^7.0.1"
   },
   "type": "module"
 }

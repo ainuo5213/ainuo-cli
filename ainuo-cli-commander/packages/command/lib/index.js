@@ -1,4 +1,4 @@
-module.exports = class Command {
+export default class Command {
   constructor(commanderInstance) {
     if (!commanderInstance) {
       throw new Error("commander instance cannot be null");
@@ -39,4 +39,4 @@ module.exports = class Command {
   postAction() {}
 
   preAction() {}
-};
+}
