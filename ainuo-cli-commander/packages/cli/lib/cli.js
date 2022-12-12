@@ -27,10 +27,7 @@ export default function createCli() {
     .name(cliname)
     .usage("<command> [options]")
     .version(pkg.version)
-    .showSuggestionAfterError(true)
-    .showHelpAfterError(true)
-    .option("d, --debug", "是否开启调试模式", false)
-
+    .option("-d, --debug", "是否开启调试模式", false)
     .hook("preAction", preAction);
 
   program.on("option:debug", () => {
