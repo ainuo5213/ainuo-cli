@@ -1,0 +1,11 @@
+{
+  "name": "@ainuotestgroup/ainuo-template-react18",
+  "version": "1.0.0",
+  "description": "ainuo react18 template",
+  "main": "index.js",
+  "author": "ainuo5213",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
