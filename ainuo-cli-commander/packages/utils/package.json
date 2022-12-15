@@ -27,7 +27,11 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
+    "inquirer": "^9.1.4",
     "npmlog": "^7.0.1"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3"
+  }
 }

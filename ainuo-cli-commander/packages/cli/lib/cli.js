@@ -21,7 +21,6 @@ function checkNodeVersion() {
 }
 
 export default function createCli() {
-  log.info("start");
   const cliname = Object.keys(pkg.bin)[0];
   program
     .name(cliname)

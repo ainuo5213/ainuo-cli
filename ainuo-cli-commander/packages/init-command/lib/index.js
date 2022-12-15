@@ -1,6 +1,8 @@
 import Command from "@ainuotestgroup/command";
 import { log } from "@ainuotestgroup/utils";
 
+import createTemplate from "./createTemplate.js";
+
 class InitCommand extends Command {
   get name() {
     return "init";
@@ -14,16 +16,11 @@ class InitCommand extends Command {
     return "初始化项目";
   }
 
-  action(name, option) {
-    log.verbose("init", name, option);
-  }
-
-  preAction() {
-    log.success("pre");
-  }
-
-  postAction() {
-    log.success("post");
+  action(name, options) {
+    // 选择项目模板，生成项目信息
+    createTemplate(name, options);
+    // 下载模板到缓存目录
+    // 安装项目模板到项目目录
   }
 }
 
