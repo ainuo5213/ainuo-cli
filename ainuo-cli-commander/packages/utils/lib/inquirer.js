@@ -32,3 +32,7 @@ function make({
 export function makeList(params) {
   return make({ ...params });
 }
+
+export function makeInput(params) {
+  return make({ ...params, type: "input" });
+}
