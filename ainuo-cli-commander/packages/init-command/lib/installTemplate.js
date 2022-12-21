@@ -10,11 +10,8 @@ function getCacheFilePath(targetPath, template) {
 
 function copyFile(targetPath, template, installDir) {
   const originFile = getCacheFilePath(targetPath, template);
-  const fileList = fse.readdirSync(originFile);
   const spinner = ora("正在拷贝模板文件...").start();
-  fileList.forEach((r) => {
-    fse.copyFileSync(`${originFile}/${r}`, `${installDir}/${r}`);
-  });
+  fse.copySync(originFile, installDir);
   spinner.stop();
   log.success("模板拷贝成功！！！");
 }

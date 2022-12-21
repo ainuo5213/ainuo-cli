@@ -20,9 +20,9 @@ class InitCommand extends Command {
     // 选择项目模板，生成项目信息
     const selectedTemplate = await createTemplate();
     // 下载模板到缓存目录
-    downloadTemplate(selectedTemplate);
+    await downloadTemplate(selectedTemplate);
     // 安装项目模板到项目目录
-    installTemplate(selectedTemplate, options);
+    await installTemplate(selectedTemplate, options);
   }
 }
 
