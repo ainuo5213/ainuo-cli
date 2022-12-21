@@ -1,17 +1,9 @@
-import { log, isDebug } from "@ainuotestgroup/utils";
-
-function printLog(e) {
-  if (isDebug()) {
-    log.error(e);
-  } else {
-    log.error(e.message);
-  }
-}
+import { log, isDebug, printErrorLog } from "@ainuotestgroup/utils";
 
 process.on("uncaughtException", (e) => {
-  printLog(e);
+  printErrorLog(e);
 });
 
 process.on("unhandledRejection", (e) => {
-  printLog(e);
+  printErrorLog(e);
 });

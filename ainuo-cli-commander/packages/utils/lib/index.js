@@ -1,3 +1,4 @@
 export { default as log } from "./log.js";
-export { default as isDebug } from "./debug.js";
+export { default as isDebug, printErrorLog } from "./debug.js";
 export { makeList, makeInput } from "./inquirer.js";
+export { getLatestVersion } from "./npm.js";
