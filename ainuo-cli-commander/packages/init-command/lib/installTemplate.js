@@ -37,13 +37,13 @@ export default async function installTemplate(selectedTemplate, options) {
   }
 
   copyFile(targetPath, template, installDir);
-  ejsRender(installDir, template);
+  ejsRender(installDir, template, name);
 }
 
-function ejsRender(installDir, template) {
+function ejsRender(installDir, template, name) {
   const ejsData = {
     data: {
-      name: template.value,
+      name: name,
     },
   };
   glob(
