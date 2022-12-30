@@ -29,8 +29,10 @@
   "dependencies": {
     "@ainuotestgroup/command": "^0.0.0",
     "@ainuotestgroup/utils": "^0.0.0",
+    "ejs": "^3.1.8",
     "execa": "^6.1.0",
     "fs-extra": "^11.1.0",
+    "glob": "^8.0.3",
     "ora": "^6.1.2",
     "path-exists": "^5.0.0"
   },

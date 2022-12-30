@@ -1,8 +1,10 @@
-import { log } from "@ainuotestgroup/utils";
+import { log, printErrorLog } from "@ainuotestgroup/utils";
 import fse from "fs-extra";
 import { pathExistsSync } from "path-exists";
 import path from "node:path";
 import ora from "ora";
+import ejs from "ejs";
+import glob from "glob";
 
 function getCacheFilePath(targetPath, template) {
   return path.resolve(targetPath, "node_modules", template.npmName, "template");
@@ -35,4 +37,52 @@ export default async function installTemplate(selectedTemplate, options) {
   }
 
   copyFile(targetPath, template, installDir);
+  ejsRender(installDir, template);
+}
+
+function ejsRender(installDir, template) {
+  const ejsData = {
+    data: {
+      name: template.value,
+    },
+  };
+  glob(
+    "**",
+    {
+      cwd: installDir,
+      nodir: true,
+      ignore: ["**/node_modules/**", "**/public/**"].concat(
+        template.ignore || []
+      ),
+    },
+    (err, files) => {
+      if (err) {
+        printErrorLog(err);
+      }
+      ejsRenderFiles(files, installDir, ejsData);
+    }
+  );
+}
+
+function ejsRenderFiles(files, installDir, ejsData) {
+  files.map((r) => {
+    const filePath = path.join(installDir, r);
+    ejsRenderFile(filePath, ejsData.data);
+  });
+}
+
+function ejsRenderFile(filePath, data) {
+  ejs.renderFile(
+    filePath,
+    {
+      data,
+    },
+    (err, result) => {
+      if (!err) {
+        fse.writeFileSync(filePath, result);
+      } else {
+        printErrorLog(err);
+      }
+    }
+  );
 }

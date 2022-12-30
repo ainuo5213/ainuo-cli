@@ -8,12 +8,14 @@ const AVALIABLE_TEMPLATES = [
     npmName: '@ainuotestgroup/ainuo-template-vue3',
     version: '1.0.0',
     value: 'ainuo-template-vue3',
+    ignore: ['**/public/**'],
   },
   {
     name: 'react18项目模板',
     npmName: '@ainuotestgroup/ainuo-template-react18',
     version: '1.0.0',
     value: 'ainuo-template-react18',
+    ignore: [],
   },
 ];
 
