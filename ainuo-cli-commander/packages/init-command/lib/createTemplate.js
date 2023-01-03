@@ -57,8 +57,9 @@ function getTargetPath() {
 
 async function getTemplatesFromApi() {
   try {
+    log.info("获取远程模板配置....");
     const data = await request({
-      url: "/project/template",
+      url: "v1/project",
       method: "get",
     });
     AVALIABLE_TEMPLATES = data;
