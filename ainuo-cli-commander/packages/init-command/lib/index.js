@@ -4,7 +4,7 @@ import downloadTemplate from "./downloadTemplate.js";
 import installTemplate from "./installTemplate.js";
 
 class InitCommand extends Command {
-  get name() {
+  get command() {
     return "init [name]";
   }
 

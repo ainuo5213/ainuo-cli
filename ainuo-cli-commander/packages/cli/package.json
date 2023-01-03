@@ -31,6 +31,7 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
+    "@ainuotestgroup/download-command": "^0.0.0",
     "@ainuotestgroup/init-command": "^0.0.0",
     "@ainuotestgroup/utils": "^0.0.0",
     "chalk": "^5.1.2",

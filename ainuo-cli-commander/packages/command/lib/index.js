@@ -4,7 +4,7 @@ export default class Command {
       throw new Error("commander instance cannot be null");
     }
     this._commander = commanderInstance;
-    const cmd = this._commander.command(this.name);
+    const cmd = this._commander.command(this.command);
     cmd.hook("preAction", () => {
       this.preAction();
     });
