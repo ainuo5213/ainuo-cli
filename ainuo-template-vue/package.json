@@ -1,11 +1,15 @@
 {
   "name": "@ainuotestgroup/ainuo-template-vue3",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "ainuo vue3 template",
   "main": "index.js",
   "author": "ainuo5213",
   "license": "ISC",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "files": [
+    "plugins",
+    "template"
+  ]
 }

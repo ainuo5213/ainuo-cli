@@ -1,7 +1,15 @@
 <template>
-  <div>hello ainuo cli</div>
+  <%_ if (data.mode === 'api') { _%>
+  <div>request api</div>
+  <%_ } else { _%>
+  <div>default</div>
+  <%_ } _%>
 </template>
 
-<script setup></script>
+<script setup>
+<%_ if (data.mode === 'api') { _%>
+console.log('request api')
+<%_ } _%>
+</script>
 
 <style></style>
