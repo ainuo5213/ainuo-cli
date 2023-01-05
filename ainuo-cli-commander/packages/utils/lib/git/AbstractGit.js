@@ -41,8 +41,18 @@ export function getPlatform() {
 export default class AbstractGit {
   token = "";
   platform = "";
+  service = null;
   async init() {
     this.token = await getToken();
     savePlatform(this.platform);
+    this.serivce = this.initService();
+  }
+
+  initService() {
+    throw new Error("method initService must be implemented");
+  }
+
+  search() {
+    throw new Error("method get must be implemented");
   }
 }

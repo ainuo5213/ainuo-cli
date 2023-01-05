@@ -3,18 +3,9 @@ import {
   Github,
   makeList,
   Gitee,
-  TEMP_HOME_DIR,
   getGitPlatform,
   TEMP_PLATFORM,
 } from "@ainuotestgroup/utils";
-import { homedir } from "node:os";
-import path from "node:path";
-import fse from "fs-extra";
-import {} from "path";
-
-function getCachedPlatformPath() {
-  return path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM);
-}
 
 const GitPlatformList = [
   { name: "github", value: Github },
@@ -38,6 +29,14 @@ class DownloadCommand extends Command {
     const gitPlatform = getGitPlatform();
     const platformInstance = await this.getGitPlatformInstance(gitPlatform);
     await platformInstance.init();
+    const data = await platformInstance.search({
+      q: "vue+language:vue",
+      order: "desc",
+      sort: "stars",
+      per_page: 5,
+      page: 1,
+    });
+    console.log(data);
   }
 
   async getGitPlatformInstance(gitPlatform) {
