@@ -42,7 +42,16 @@ export default class Github extends AbstractGit {
   }
 
   search(params) {
-    console.log(params);
-    return this.get("/search/reponsitories", params);
+    return this.get("/search/repositories", params);
+  }
+
+  getSearchParams({ keyWord, language, page, per_page }) {
+    return {
+      q: `${keyWord}+language:${language}`,
+      order: "desc",
+      sort: "stars",
+      per_page: per_page || 5,
+      page: page || 1,
+    };
   }
 }

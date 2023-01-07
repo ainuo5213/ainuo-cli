@@ -55,4 +55,8 @@ export default class AbstractGit {
   search() {
     throw new Error("method get must be implemented");
   }
+
+  getSearchParams(params) {
+    throw new Error("method getSearchParams must be implemented");
+  }
 }
