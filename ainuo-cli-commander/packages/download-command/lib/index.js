@@ -132,7 +132,10 @@ class DownloadCommand extends Command {
     }
     this.choices.push(...choices);
     const checkedReponsitory = await makeList({
-      message: `请选择要下载的项目(共${this.totalCount}条数据)`,
+      message:
+        "请选择要下载的项目" + this.gitAPI.platform === PLATFORM_GITHUB
+          ? `(共${this.totalCount}条数据)`
+          : "",
       choices: this.choices,
       loop: false,
     });
