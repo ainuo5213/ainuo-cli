@@ -1,32 +1,36 @@
 import Command from "@ainuotestgroup/command";
-import ora from "ora";
 import {
   Github,
   makeList,
   Gitee,
   getGitPlatform,
-  TEMP_PLATFORM,
   makeInput,
+  PLATFORM_GITHUB,
+  PLATFORM_GITEE,
+  log,
 } from "@ainuotestgroup/utils";
 
 const GitPlatformList = [
-  { name: "github", value: Github },
-  { name: "gitee", value: Gitee },
+  { name: PLATFORM_GITHUB, value: Github },
+  { name: PLATFORM_GITEE, value: Gitee },
 ];
 
 const NEXT_PAGE_VALUE = "${next_page}";
 const NEXT_PAGE_NAME = "下一页";
 const PREV_PAGE_VALUE = "$prev_page}";
 const PREV_PAGE_NAME = "上一页";
+const SEARCH_MODE_REPO = "search_repo";
+const SEARCH_MODE_CODE = "search_code";
 
 class DownloadCommand extends Command {
   gitAPI = null;
   q = "";
   language = "";
   page = 1;
-  per_page = 10;
-  total_count = 0;
+  perPage = 10;
+  totalCount = 0;
   choices = [];
+  mode = SEARCH_MODE_REPO;
   get command() {
     return "download";
   }
@@ -51,33 +55,70 @@ class DownloadCommand extends Command {
     this.gitAPI = platformInstance;
   }
 
+  async getSearchMode() {
+    const searchMode = await makeList({
+      message: "请选择搜索模式",
+      choices: [
+        { name: "源码", value: SEARCH_MODE_CODE },
+        { name: "仓库", value: SEARCH_MODE_REPO },
+      ],
+    });
+
+    return searchMode;
+  }
+
   async searchGitAPI() {
-    // 收集搜索关键词和开发语言
+    if (this.gitAPI.platform == PLATFORM_GITHUB) {
+      this.mode = await this.getSearchMode();
+    }
     const q = await makeInput({
       message: "请输入搜索关键字",
       validate(val) {
         return val.length > 0 ? true : "请输入搜索关键字";
       },
     });
-    const language = await makeInput({
-      message: "请输入开发语言",
-    });
+    let language = "";
+    if (this.gitAPI.platform === PLATFORM_GITEE) {
+      language = await makeInput({
+        message: "请输入开发语言",
+      });
+    }
     this.q = q;
     this.language = language;
     this.doSearch();
   }
 
   async doSearch() {
-    const data = await this.searchReponsitories();
-    // github
-    this.total_count = data.total_count;
-    const choices = data.items.map((r) => {
-      return {
-        name: `${r.full_name}(${r.description})`,
-        value: r.full_name,
-      };
-    });
-    if (this.page * this.per_page < this.total_count) {
+    let choices = [];
+    let totalCount = 0;
+    let res;
+    if (this.mode === SEARCH_MODE_REPO) {
+      res = await this.gitAPI.searchRepositories({
+        keyWord: this.q,
+        language: this.language,
+        page: this.page,
+        per_page: this.perPage,
+      });
+    } else {
+      res = await this.gitAPI.searchSourceCode({
+        keyWord: this.q,
+        language: this.language,
+        page: this.page,
+        per_page: this.perPage,
+      });
+    }
+    totalCount = res.totalCount;
+    choices = res.items;
+    this.totalCount = totalCount;
+    if (this.totalCount > 0) {
+      this.renderSearchResult(choices);
+    } else {
+      log.info("There was no data here!!!");
+    }
+  }
+
+  async renderSearchResult(choices) {
+    if (this.page * this.perPage < this.totalCount) {
       choices.push({
         name: NEXT_PAGE_NAME,
         value: NEXT_PAGE_VALUE,
@@ -91,7 +132,7 @@ class DownloadCommand extends Command {
     }
     this.choices.push(...choices);
     const checkedReponsitory = await makeList({
-      message: `请选择要下载的项目(共${this.total_count}条数据)`,
+      message: `请选择要下载的项目(共${this.totalCount}条数据)`,
       choices: this.choices,
       loop: false,
     });
@@ -101,8 +142,14 @@ class DownloadCommand extends Command {
       this.prevPage();
     } else {
       // TODO: 源码下载
+      const selectResult = this.choices.find(
+        (r) => r.value === checkedReponsitory
+      )._data;
+      this.downloadSourceCode(selectResult);
     }
   }
+
+  downloadSourceCode(selectedReponsitory) {}
 
   prevPage() {
     this.page -= 1;
@@ -112,17 +159,6 @@ class DownloadCommand extends Command {
   nextPage() {
     this.page += 1;
     this.doSearch();
-  }
-
-  async searchReponsitories() {
-    const searchParams = this.gitAPI.getSearchParams({
-      keyWord: this.q,
-      language: this.language,
-      page: this.page,
-      per_page: this.per_page,
-    });
-    const data = await this.gitAPI.search(searchParams);
-    return data;
   }
 
   async getGitPlatformInstance(gitPlatform) {

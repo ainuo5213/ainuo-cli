@@ -1,10 +1,11 @@
 import axios from "axios";
+import { PLATFORM_GITHUB } from "../cache.js";
 import AbstractGit from "./AbstractGit.js";
 
 const BASE_URL = "https://api.github.com";
 
 export default class Github extends AbstractGit {
-  platform = "github";
+  platform = PLATFORM_GITHUB;
 
   initService() {
     const serivce = axios.create({
@@ -13,7 +14,7 @@ export default class Github extends AbstractGit {
     });
     serivce.interceptors.request.use(
       (config) => {
-        config.headers["Authorization"] = `Bearer ${this.token}`;
+        config.headers["Authorization"] = `Bearer ${this.token.trim()}`;
         config.headers["Accept"] = `application/vnd.github+json`;
         return config;
       },
@@ -41,8 +42,39 @@ export default class Github extends AbstractGit {
     });
   }
 
-  search(params) {
-    return this.get("/search/repositories", params);
+  async searchRepositories(params) {
+    const parameters = this.getSearchParams(params);
+    const { total_count, items } = await this.get(
+      "/search/repositories",
+      parameters
+    );
+    return {
+      totalCount: total_count,
+      items: items.map((r) => {
+        return {
+          name: r.full_name + (r.description ? `(${r.description})` : ""),
+          value: r.full_name,
+          _data: r,
+        };
+      }),
+    };
+  }
+
+  searchSourceCode(params) {
+    const parameters = this.getSearchParams(params);
+    const { total_count, items } = this.get("/search/code", parameters);
+    return {
+      totalCount: total_count,
+      items: items.map((r) => {
+        const repo = r.repository;
+        return {
+          name:
+            repo.full_name + (repo.description ? `(${repo.description})` : ""),
+          value: repo.full_name,
+          _data: repo,
+        };
+      }),
+    };
   }
 
   getSearchParams({ keyWord, language, page, per_page }) {

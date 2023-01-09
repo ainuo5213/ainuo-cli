@@ -52,7 +52,7 @@ export default class AbstractGit {
     throw new Error("method initService must be implemented");
   }
 
-  search() {
+  searchRepositories() {
     throw new Error("method get must be implemented");
   }
 

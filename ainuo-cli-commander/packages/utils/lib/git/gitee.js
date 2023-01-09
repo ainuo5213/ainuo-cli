@@ -1,10 +1,11 @@
 import axios from "axios";
+import { PLATFORM_GITEE } from "../cache.js";
 import AbstractGit from "./AbstractGit.js";
 
 const BASE_URL = "https://gitee.com/api/v5";
 
 export default class Gitee extends AbstractGit {
-  platform = "gitee";
+  platform = PLATFORM_GITEE;
 
   initService() {
     const serivce = axios.create({
@@ -34,18 +35,34 @@ export default class Gitee extends AbstractGit {
     });
   }
 
-  search(params) {
-    return this.get("/search/repositories", params);
+  searchRepositories(params) {
+    const parameters = this.getSearchParams(params);
+    const data = this.get("/search/repositories", parameters);
+    return {
+      totalCount: 999999,
+      items: data.map((r) => {
+        return {
+          name: r.full_name + (r.description ? `(${r.description})` : ""),
+          value: r.full_name,
+          _data: r,
+        };
+      }),
+    };
   }
 
   getSearchParams({ keyWord, language, page, per_page }) {
-    return {
+    const params = {
       q: keyWord,
-      language,
       order: "desc",
       sort: "stars_count",
       per_page: per_page || 5,
       page: page || 1,
     };
+
+    if (language) {
+      params.language = language;
+    }
+
+    return params;
   }
 }
