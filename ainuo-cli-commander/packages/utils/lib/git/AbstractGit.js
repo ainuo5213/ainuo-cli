@@ -56,7 +56,11 @@ export default class AbstractGit {
     throw new Error("method get must be implemented");
   }
 
-  getSearchParams(params) {
+  getSearchParams() {
     throw new Error("method getSearchParams must be implemented");
+  }
+
+  getReleasedVersions() {
+    throw new Error("method getReleasedVersions must be implemented");
   }
 }

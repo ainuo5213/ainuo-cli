@@ -60,9 +60,9 @@ export default class Github extends AbstractGit {
     };
   }
 
-  searchSourceCode(params) {
+  async searchSourceCode(params) {
     const parameters = this.getSearchParams(params);
-    const { total_count, items } = this.get("/search/code", parameters);
+    const { total_count, items } = await this.get("/search/code", parameters);
     return {
       totalCount: total_count,
       items: items.map((r) => {
@@ -85,5 +85,21 @@ export default class Github extends AbstractGit {
       per_page: per_page || 5,
       page: page || 1,
     };
+  }
+
+  getReleasedVersions(params) {
+    return this.get(`/repos/${params.fullName}/tags`, {
+      per_page: params.perPage,
+      page: params.page,
+    }).then((data) => {
+      return {
+        totalCount: 999999,
+        items: data.map((r) => ({
+          name: r.name,
+          value: r.name,
+          _data: r,
+        })),
+      };
+    });
   }
 }

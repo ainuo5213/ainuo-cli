@@ -29,8 +29,14 @@ class DownloadCommand extends Command {
   page = 1;
   perPage = 10;
   totalCount = 0;
-  choices = [];
+  repoChoices = [];
+  tagChoices = [];
   mode = SEARCH_MODE_REPO;
+  tagPage = 1;
+  tagTotalCount = 0;
+  tagPerPage = 10;
+  selectedReponsitory = null;
+  selectedReponsitoryTag = null;
   get command() {
     return "download";
   }
@@ -78,18 +84,18 @@ class DownloadCommand extends Command {
       },
     });
     let language = "";
-    if (this.gitAPI.platform === PLATFORM_GITEE) {
+    if (this.gitAPI.platform === PLATFORM_GITHUB) {
       language = await makeInput({
         message: "请输入开发语言",
       });
     }
     this.q = q;
     this.language = language;
-    this.doSearch();
+    this.getRepos();
   }
 
-  async doSearch() {
-    let choices = [];
+  async getRepos() {
+    let repoChoices = [];
     let totalCount = 0;
     let res;
     if (this.mode === SEARCH_MODE_REPO) {
@@ -108,60 +114,144 @@ class DownloadCommand extends Command {
       });
     }
     totalCount = res.totalCount;
-    choices = res.items;
+    repoChoices = res.items;
     this.totalCount = totalCount;
     if (this.totalCount > 0) {
-      this.renderSearchResult(choices);
+      this.renderSearchedRepos(repoChoices);
     } else {
       log.info("There was no data here!!!");
     }
   }
 
-  async renderSearchResult(choices) {
-    if (this.page * this.perPage < this.totalCount) {
-      choices.push({
-        name: NEXT_PAGE_NAME,
-        value: NEXT_PAGE_VALUE,
-      });
+  async renderSearchedRepos(repoChoices) {
+    if (repoChoices.length === 0) {
+      this.renderSearchedRepos(this.repoChoices);
+      return;
     }
-    if (this.page > 1) {
-      choices.unshift({
-        name: PREV_PAGE_NAME,
-        value: PREV_PAGE_VALUE,
-      });
+    this.pageChoices(repoChoices, {
+      page: this.page,
+      perPage: this.perPage,
+      totalCount: this.totalCount,
+      canGenPageChoice: repoChoices.length > 0,
+    });
+    this.repoChoices.push(...repoChoices);
+    this.renderRepos(repoChoices);
+  }
+
+  async renderRepos(repoChoices) {
+    if (repoChoices.length === 0) {
+      return;
     }
-    this.choices.push(...choices);
     const checkedReponsitory = await makeList({
       message:
         "请选择要下载的项目" + this.gitAPI.platform === PLATFORM_GITHUB
           ? `(共${this.totalCount}条数据)`
           : "",
-      choices: this.choices,
+      choices: this.repoChoices,
       loop: false,
     });
     if (checkedReponsitory === NEXT_PAGE_VALUE) {
-      this.nextPage();
+      this.nextRepos();
     } else if (checkedReponsitory === PREV_PAGE_VALUE) {
-      this.prevPage();
+      this.prevRepos();
     } else {
-      // TODO: 源码下载
-      const selectResult = this.choices.find(
+      const selectResult = this.repoChoices.find(
         (r) => r.value === checkedReponsitory
       )._data;
-      this.downloadSourceCode(selectResult);
+      this.selectedReponsitory = selectResult;
+      this.getTags();
     }
   }
 
-  downloadSourceCode(selectedReponsitory) {}
-
-  prevPage() {
-    this.page -= 1;
-    this.doSearch();
+  pageChoices(choices, option) {
+    option.canGenPageChoice =
+      option.canGenPageChoice === undefined ? true : option.canGenPageChoice;
+    if (!option.canGenPageChoice) {
+      return;
+    }
+    if (option.page * option.perPage < option.totalCount) {
+      choices.push({
+        name: NEXT_PAGE_NAME,
+        value: NEXT_PAGE_VALUE,
+      });
+    }
+    if (option.page > 1) {
+      choices.unshift({
+        name: PREV_PAGE_NAME,
+        value: PREV_PAGE_VALUE,
+      });
+    }
   }
 
-  nextPage() {
+  async getTags() {
+    const { totalCount, items: tagChoices } =
+      await this.gitAPI.getReleasedVersions({
+        fullName: this.selectedReponsitory.full_name,
+        perPage: this.tagPerPage,
+        page: this.tagPage,
+      });
+    this.tagTotalCount = totalCount;
+    this.renderSearchedTags(tagChoices);
+  }
+
+  async renderSearchedTags(tagChoices) {
+    if (tagChoices.length === 0) {
+      this.renderTags(this.tagChoices);
+      return;
+    }
+    this.pageChoices(tagChoices, {
+      page: this.tagPage,
+      totalCount: this.tagTotalCount,
+      perPage: this.tagPerPage,
+      canGenPageChoice:
+        this.gitAPI.platform !== PLATFORM_GITEE && tagChoices.length > 0,
+    });
+    this.tagChoices.push(...tagChoices);
+    this.renderTags(tagChoices);
+  }
+
+  async renderTags(tagChoices) {
+    if (tagChoices.length === 0) {
+      return;
+    }
+    const checkedTag = await makeList({
+      message: "请选择要下载项目的版本",
+      choices: tagChoices,
+      loop: false,
+    });
+    if (checkedTag === NEXT_PAGE_VALUE) {
+      this.nextTags();
+    } else if (checkedTag === PREV_PAGE_VALUE) {
+      this.prevTags();
+    } else {
+      const selectResult = this.tagChoices.find(
+        (r) => r.value === checkedTag
+      )._data;
+      this.selectedReponsitoryTag = selectResult;
+      this.downloadSourceCode();
+    }
+  }
+
+  downloadSourceCode() {}
+
+  prevTags() {
+    this.tagPage -= 1;
+    this.getTags();
+  }
+
+  nextTags() {
+    this.tagPage += 1;
+    this.getTags();
+  }
+
+  prevRepos() {
+    this.page -= 1;
+    this.getRepos();
+  }
+
+  nextRepos() {
     this.page += 1;
-    this.doSearch();
+    this.getRepos();
   }
 
   async getGitPlatformInstance(gitPlatform) {

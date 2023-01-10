@@ -35,9 +35,9 @@ export default class Gitee extends AbstractGit {
     });
   }
 
-  searchRepositories(params) {
+  async searchRepositories(params) {
     const parameters = this.getSearchParams(params);
-    const data = this.get("/search/repositories", parameters);
+    const data = await this.get("/search/repositories", parameters);
     return {
       totalCount: 999999,
       items: data.map((r) => {
@@ -64,5 +64,18 @@ export default class Gitee extends AbstractGit {
     }
 
     return params;
+  }
+
+  getReleasedVersions(params) {
+    return this.get(`/repos/${params.fullName}/tags`).then((data) => {
+      return {
+        totalCount: data.length,
+        items: data.map((r) => ({
+          name: r.name,
+          value: r.name,
+          _data: r,
+        })),
+      };
+    });
   }
 }
