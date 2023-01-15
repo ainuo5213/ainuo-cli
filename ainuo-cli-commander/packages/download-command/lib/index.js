@@ -8,7 +8,9 @@ import {
   PLATFORM_GITHUB,
   PLATFORM_GITEE,
   log,
+  printErrorLog,
 } from "@ainuotestgroup/utils";
+import ora from "ora";
 
 const GitPlatformList = [
   { name: PLATFORM_GITHUB, value: Github },
@@ -98,20 +100,27 @@ class DownloadCommand extends Command {
     let repoChoices = [];
     let totalCount = 0;
     let res;
-    if (this.mode === SEARCH_MODE_REPO) {
-      res = await this.gitAPI.searchRepositories({
-        keyWord: this.q,
-        language: this.language,
-        page: this.page,
-        per_page: this.perPage,
-      });
-    } else {
-      res = await this.gitAPI.searchSourceCode({
-        keyWord: this.q,
-        language: this.language,
-        page: this.page,
-        per_page: this.perPage,
-      });
+    const spinner = ora("fetching repos");
+    try {
+      if (this.mode === SEARCH_MODE_REPO) {
+        res = await this.gitAPI.searchRepositories({
+          keyWord: this.q,
+          language: this.language,
+          page: this.page,
+          per_page: this.perPage,
+        });
+      } else {
+        res = await this.gitAPI.searchSourceCode({
+          keyWord: this.q,
+          language: this.language,
+          page: this.page,
+          per_page: this.perPage,
+        });
+      }
+      spinner.stop();
+    } catch (err) {
+      printErrorLog(err);
+      spinner.stop();
     }
     totalCount = res.totalCount;
     repoChoices = res.items;
@@ -184,14 +193,23 @@ class DownloadCommand extends Command {
   }
 
   async getTags() {
-    const { totalCount, items: tagChoices } =
-      await this.gitAPI.getReleasedVersions({
-        fullName: this.selectedReponsitory.full_name,
-        perPage: this.tagPerPage,
-        page: this.tagPage,
-      });
-    this.tagTotalCount = totalCount;
-    this.renderSearchedTags(tagChoices);
+    const spinner = ora(
+      "fetching tags of " + this.selectedReponsitory.full_name
+    );
+    try {
+      const { totalCount, items: tagChoices } =
+        await this.gitAPI.getReleasedVersions({
+          fullName: this.selectedReponsitory.full_name,
+          perPage: this.tagPerPage,
+          page: this.tagPage,
+        });
+      spinner.stop();
+      this.tagTotalCount = totalCount;
+      this.renderSearchedTags(tagChoices);
+    } catch (err) {
+      printErrorLog(err);
+      spinner.stop();
+    }
   }
 
   async renderSearchedTags(tagChoices) {
@@ -232,7 +250,21 @@ class DownloadCommand extends Command {
     }
   }
 
-  downloadSourceCode() {}
+  async downloadSourceCode() {
+    const repoUrl = this.gitAPI.getRepoUrl(this.selectedReponsitory.full_name);
+    const spinner = ora(
+      "downloading repo " + this.selectedReponsitory.full_name
+    );
+    spinner.start();
+    try {
+      await this.gitAPI.cloneRepo(repoUrl, this.selectedReponsitoryTag.name);
+      spinner.stop();
+      log.success("下载源码" + this.selectedReponsitory.full_name + "成功");
+    } catch (err) {
+      printErrorLog(err);
+      spinner.stop();
+    }
+  }
 
   prevTags() {
     this.tagPage -= 1;

@@ -4,6 +4,7 @@ import { TEMP_HOME_DIR, TEMP_TOKEN_DIR, TEMP_PLATFORM } from "../cache.js";
 import { pathExistsSync } from "path-exists";
 import fse from "fs-extra";
 import { makePassword } from "../inquirer.js";
+import { execaCommand } from "execa";
 
 function getCachedTokenPath() {
   return path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR);
@@ -62,5 +63,14 @@ export default class AbstractGit {
 
   getReleasedVersions() {
     throw new Error("method getReleasedVersions must be implemented");
+  }
+
+  getRepoUrl() {
+    throw new Error("getRepoUrl getReleasedVersions must be implemented");
+  }
+
+  cloneRepo(repoUrl, version) {
+    const tagCommand = version ? ` -b ${version}` : "";
+    return execaCommand(`git clone ${repoUrl}${tagCommand}`);
   }
 }

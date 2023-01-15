@@ -78,4 +78,8 @@ export default class Gitee extends AbstractGit {
       };
     });
   }
+
+  getRepoUrl(fullName) {
+    return `https://gitee.com/${fullName}.git`;
+  }
 }

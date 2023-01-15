@@ -102,4 +102,8 @@ export default class Github extends AbstractGit {
       };
     });
   }
+
+  getRepoUrl(fullName) {
+    return `https://github.com/${fullName}.git`;
+  }
 }
