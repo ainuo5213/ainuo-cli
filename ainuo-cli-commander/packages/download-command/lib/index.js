@@ -11,6 +11,7 @@ import {
   printErrorLog,
 } from "@ainuotestgroup/utils";
 import ora from "ora";
+import path from "node:path";
 
 const GitPlatformList = [
   { name: PLATFORM_GITHUB, value: Github },
@@ -260,9 +261,25 @@ class DownloadCommand extends Command {
       await this.gitAPI.cloneRepo(repoUrl, this.selectedReponsitoryTag.name);
       spinner.stop();
       log.success("下载源码" + this.selectedReponsitory.full_name + "成功");
+      this.installDependency();
     } catch (err) {
       printErrorLog(err);
       spinner.stop();
+    }
+  }
+
+  installDependency() {
+    const cwd = process.cwd();
+    const fullName = this.selectedReponsitory.full_name;
+    if (this.gitAPI.hasPkg(cwd, fullName)) {
+      const spinner = ora("installing dependencies");
+      try {
+        this.gitAPI.installDependency(cwd, fullName);
+        spinner.stop();
+      } catch (err) {
+        printErrorLog(err);
+        spinner.stop();
+      }
     }
   }
 

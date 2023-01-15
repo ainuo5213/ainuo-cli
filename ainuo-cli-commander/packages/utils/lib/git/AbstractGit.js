@@ -73,4 +73,25 @@ export default class AbstractGit {
     const tagCommand = version ? ` -b ${version}` : "";
     return execaCommand(`git clone ${repoUrl}${tagCommand}`);
   }
+
+  hasPkg(cwd, fullName) {
+    const projectName = fullName.split("/")[1];
+    const projectPath = path.resolve(cwd, projectName);
+    const pkgPath = path.resolve(projectPath, "package.json");
+    console.log(pkgPath);
+    return pathExistsSync(projectPath) && pathExistsSync(pkgPath);
+  }
+
+  installDependency(cwd, fullName) {
+    const projectName = fullName.split("/")[1];
+    const projectPath = path.resolve(cwd, projectName);
+    if (this.hasPkg(cwd, fullName)) {
+      return execaCommand(
+        `npm install --registry=https://registry.npmmirror.com`,
+        {
+          cwd: projectPath,
+        }
+      );
+    }
+  }
 }
