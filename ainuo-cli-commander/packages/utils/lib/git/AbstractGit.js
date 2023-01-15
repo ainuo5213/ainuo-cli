@@ -78,7 +78,6 @@ export default class AbstractGit {
     const projectName = fullName.split("/")[1];
     const projectPath = path.resolve(cwd, projectName);
     const pkgPath = path.resolve(projectPath, "package.json");
-    console.log(pkgPath);
     return pathExistsSync(projectPath) && pathExistsSync(pkgPath);
   }
 

@@ -81,7 +81,6 @@ export default class Github extends AbstractGit {
     return {
       q: `${keyWord}+language:${language}`,
       order: "desc",
-      sort: "stars",
       per_page: per_page || 5,
       page: page || 1,
     };

@@ -54,7 +54,6 @@ export default class Gitee extends AbstractGit {
     const params = {
       q: keyWord,
       order: "desc",
-      sort: "stars_count",
       per_page: per_page || 5,
       page: page || 1,
     };

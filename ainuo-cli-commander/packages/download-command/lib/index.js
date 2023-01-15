@@ -55,6 +55,7 @@ class DownloadCommand extends Command {
   async action(name, options) {
     await this.generateGitAPI();
     await this.searchGitAPI();
+    process.exit();
   }
 
   async generateGitAPI() {
@@ -205,6 +206,10 @@ class DownloadCommand extends Command {
           page: this.tagPage,
         });
       spinner.stop();
+      if (this.tagPage === 1 && tagChoices.length === 0) {
+        this.downloadSourceCode();
+        return;
+      }
       this.tagTotalCount = totalCount;
       this.renderSearchedTags(tagChoices);
     } catch (err) {
@@ -258,7 +263,7 @@ class DownloadCommand extends Command {
     );
     spinner.start();
     try {
-      await this.gitAPI.cloneRepo(repoUrl, this.selectedReponsitoryTag.name);
+      await this.gitAPI.cloneRepo(repoUrl, this.selectedReponsitoryTag?.name);
       spinner.stop();
       log.success("下载源码" + this.selectedReponsitory.full_name + "成功");
       this.installDependency();
@@ -273,9 +278,11 @@ class DownloadCommand extends Command {
     const fullName = this.selectedReponsitory.full_name;
     if (this.gitAPI.hasPkg(cwd, fullName)) {
       const spinner = ora("installing dependencies");
+      spinner.start();
       try {
         this.gitAPI.installDependency(cwd, fullName);
         spinner.stop();
+        log.success("dependencies were installed");
       } catch (err) {
         printErrorLog(err);
         spinner.stop();
