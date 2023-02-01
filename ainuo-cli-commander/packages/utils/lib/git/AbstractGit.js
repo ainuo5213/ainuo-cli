@@ -5,6 +5,7 @@ import { pathExistsSync } from "path-exists";
 import fse from "fs-extra";
 import { makePassword } from "../inquirer.js";
 import { execaCommand } from "execa";
+import { taobaoMirror } from "../npm.js";
 
 function getCachedTokenPath() {
   return path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR);
@@ -85,12 +86,9 @@ export default class AbstractGit {
     const projectName = fullName.split("/")[1];
     const projectPath = path.resolve(cwd, projectName);
     if (this.hasPkg(cwd, fullName)) {
-      return execaCommand(
-        `npm install --registry=https://registry.npmmirror.com`,
-        {
-          cwd: projectPath,
-        }
-      );
+      return execaCommand(`npm install --registry=${taobaoMirror}`, {
+        cwd: projectPath,
+      });
     }
   }
 }

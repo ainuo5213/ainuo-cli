@@ -28,7 +28,10 @@ async function execDownloadTemplate(selectedTemplate) {
     version = latestVersion;
   }
   const cwd = getCacheDir(targetPath);
-  await execaCommand(`npm install ${npmName}@${version}`, { cwd });
+  await execaCommand(
+    `npm install ${npmName}@${version} --registry=${taobaoMirror}`,
+    { cwd }
+  );
 }
 
 export default async function downloadTemplate(selectedTemplate) {
