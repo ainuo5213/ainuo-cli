@@ -1,21 +1,28 @@
 import { homedir } from "node:os";
 import path from "node:path";
-import { TEMP_HOME_DIR, TEMP_TOKEN_DIR, TEMP_PLATFORM } from "../cache.js";
+import {TEMP_HOME_DIR, TEMP_TOKEN_DIR, TEMP_PLATFORM} from "../cache.js";
 import { pathExistsSync } from "path-exists";
 import fse from "fs-extra";
-import { makePassword } from "../inquirer.js";
+import {makePassword} from "../inquirer.js";
 import { execaCommand } from "execa";
 import { taobaoMirror } from "../npm.js";
 
-function getCachedTokenPath() {
+function ensureHomeDir() {
+  const homeDir = path.join(homedir(), TEMP_HOME_DIR)
+  return fse.ensureDir(homeDir)
+}
+
+export function getCachedTokenPath() {
+  ensureHomeDir()
   return path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR);
 }
 
-function getCachedPlatformPath() {
+export function getCachedPlatformPath() {
+  ensureHomeDir()
   return path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM);
 }
 
-async function getToken() {
+export async function getToken() {
   const tokenPath = getCachedTokenPath();
   if (pathExistsSync(tokenPath)) {
     return fse.readFileSync(tokenPath).toString();
@@ -30,14 +37,6 @@ async function getToken() {
 
 export function savePlatform(platform) {
   fse.writeFileSync(getCachedPlatformPath(), platform);
-}
-
-export function getPlatform() {
-  const platformPath = getCachedPlatformPath();
-  if (pathExistsSync(platformPath)) {
-    return fse.readFileSync(platformPath).toString();
-  }
-  return "";
 }
 
 export default class AbstractGit {

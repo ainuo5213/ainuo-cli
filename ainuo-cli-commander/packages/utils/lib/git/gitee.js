@@ -6,13 +6,12 @@ const BASE_URL = "https://gitee.com/api/v5";
 
 export default class Gitee extends AbstractGit {
   platform = PLATFORM_GITEE;
-
   initService() {
-    const serivce = axios.create({
+    const service = axios.create({
       baseURL: BASE_URL,
       timeout: 10 * 1000,
     });
-    serivce.interceptors.response.use(
+    service.interceptors.response.use(
       (response) => {
         return response.data;
       },
@@ -20,7 +19,7 @@ export default class Gitee extends AbstractGit {
         return Promise.reject(err);
       }
     );
-    return serivce;
+    return service;
   }
 
   get(url, params, ...options) {

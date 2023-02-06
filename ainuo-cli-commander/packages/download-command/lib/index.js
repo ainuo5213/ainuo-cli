@@ -1,8 +1,6 @@
 import Command from "@ainuotestgroup/command";
 import {
-  Github,
   makeList,
-  Gitee,
   getGitPlatform,
   makeInput,
   PLATFORM_GITHUB,
@@ -11,12 +9,6 @@ import {
   printErrorLog,
 } from "@ainuotestgroup/utils";
 import ora from "ora";
-import path from "node:path";
-
-const GitPlatformList = [
-  { name: PLATFORM_GITHUB, value: Github },
-  { name: PLATFORM_GITEE, value: Gitee },
-];
 
 const NEXT_PAGE_VALUE = "${next_page}";
 const NEXT_PAGE_NAME = "下一页";
@@ -27,19 +19,33 @@ const SEARCH_MODE_CODE = "search_code";
 
 class DownloadCommand extends Command {
   gitAPI = null;
+
   q = "";
+
   language = "";
+
   page = 1;
+
   perPage = 10;
+
   totalCount = 0;
+
   repoChoices = [];
+
   tagChoices = [];
+
   mode = SEARCH_MODE_REPO;
+
   tagPage = 1;
+
   tagTotalCount = 0;
+
   tagPerPage = 10;
-  selectedReponsitory = null;
-  selectedReponsitoryTag = null;
+
+  selectedRepository = null;
+
+  selectedRepositoryTag = null;
+
   get command() {
     return "download";
   }
@@ -59,9 +65,7 @@ class DownloadCommand extends Command {
   }
 
   async generateGitAPI() {
-    const gitPlatform = getGitPlatform();
-    const platformInstance = await this.getGitPlatformInstance(gitPlatform);
-    await platformInstance.init();
+    const platformInstance = await getGitPlatform()
     this.gitAPI = platformInstance;
   }
 
@@ -69,8 +73,8 @@ class DownloadCommand extends Command {
     const searchMode = await makeList({
       message: "请选择搜索模式",
       choices: [
-        { name: "源码", value: SEARCH_MODE_CODE },
-        { name: "仓库", value: SEARCH_MODE_REPO },
+        {name: "源码", value: SEARCH_MODE_CODE},
+        {name: "仓库", value: SEARCH_MODE_REPO},
       ],
     });
 
@@ -95,7 +99,7 @@ class DownloadCommand extends Command {
     }
     this.q = q;
     this.language = language;
-    this.getRepos();
+    await this.getRepos();
   }
 
   async getRepos() {
@@ -128,7 +132,7 @@ class DownloadCommand extends Command {
     repoChoices = res.items;
     this.totalCount = totalCount;
     if (this.totalCount > 0) {
-      this.renderSearchedRepos(repoChoices);
+      await this.renderSearchedRepos(repoChoices);
     } else {
       log.info("There was no data here!!!");
     }
@@ -136,7 +140,7 @@ class DownloadCommand extends Command {
 
   async renderSearchedRepos(repoChoices) {
     if (repoChoices.length === 0) {
-      this.renderSearchedRepos(this.repoChoices);
+      await this.renderSearchedRepos(this.repoChoices);
       return;
     }
     this.pageChoices(repoChoices, {
@@ -146,14 +150,14 @@ class DownloadCommand extends Command {
       canGenPageChoice: repoChoices.length > 0,
     });
     this.repoChoices.push(...repoChoices);
-    this.renderRepos(repoChoices);
+    await this.renderRepos(repoChoices);
   }
 
   async renderRepos(repoChoices) {
     if (repoChoices.length === 0) {
       return;
     }
-    const checkedReponsitory = await makeList({
+    const checkedRepository = await makeList({
       message:
         "请选择要下载的项目" + this.gitAPI.platform === PLATFORM_GITHUB
           ? `(共${this.totalCount}条数据)`
@@ -161,16 +165,16 @@ class DownloadCommand extends Command {
       choices: this.repoChoices,
       loop: false,
     });
-    if (checkedReponsitory === NEXT_PAGE_VALUE) {
+    if (checkedRepository === NEXT_PAGE_VALUE) {
       this.nextRepos();
-    } else if (checkedReponsitory === PREV_PAGE_VALUE) {
+    } else if (checkedRepository === PREV_PAGE_VALUE) {
       this.prevRepos();
     } else {
       const selectResult = this.repoChoices.find(
-        (r) => r.value === checkedReponsitory
+        (r) => r.value === checkedRepository
       )._data;
-      this.selectedReponsitory = selectResult;
-      this.getTags();
+      this.selectedRepository = selectResult;
+      await this.getTags();
     }
   }
 
@@ -196,22 +200,22 @@ class DownloadCommand extends Command {
 
   async getTags() {
     const spinner = ora(
-      "fetching tags of " + this.selectedReponsitory.full_name
+      "fetching tags of " + this.selectedRepository.full_name
     );
     try {
-      const { totalCount, items: tagChoices } =
+      const {totalCount, items: tagChoices} =
         await this.gitAPI.getReleasedVersions({
-          fullName: this.selectedReponsitory.full_name,
+          fullName: this.selectedRepository.full_name,
           perPage: this.tagPerPage,
           page: this.tagPage,
         });
       spinner.stop();
       if (this.tagPage === 1 && tagChoices.length === 0) {
-        this.downloadSourceCode();
+        await this.downloadSourceCode();
         return;
       }
       this.tagTotalCount = totalCount;
-      this.renderSearchedTags(tagChoices);
+      await this.renderSearchedTags(tagChoices);
     } catch (err) {
       printErrorLog(err);
       spinner.stop();
@@ -220,7 +224,7 @@ class DownloadCommand extends Command {
 
   async renderSearchedTags(tagChoices) {
     if (tagChoices.length === 0) {
-      this.renderTags(this.tagChoices);
+      await this.renderTags(this.tagChoices);
       return;
     }
     this.pageChoices(tagChoices, {
@@ -231,7 +235,7 @@ class DownloadCommand extends Command {
         this.gitAPI.platform !== PLATFORM_GITEE && tagChoices.length > 0,
     });
     this.tagChoices.push(...tagChoices);
-    this.renderTags(tagChoices);
+    await this.renderTags(tagChoices);
   }
 
   async renderTags(tagChoices) {
@@ -251,21 +255,21 @@ class DownloadCommand extends Command {
       const selectResult = this.tagChoices.find(
         (r) => r.value === checkedTag
       )._data;
-      this.selectedReponsitoryTag = selectResult;
-      this.downloadSourceCode();
+      this.selectedRepositoryTag = selectResult;
+      await this.downloadSourceCode();
     }
   }
 
   async downloadSourceCode() {
-    const repoUrl = this.gitAPI.getRepoUrl(this.selectedReponsitory.full_name);
+    const repoUrl = this.gitAPI.getRepoUrl(this.selectedRepository.full_name);
     const spinner = ora(
-      "downloading repo " + this.selectedReponsitory.full_name
+      "downloading repo " + this.selectedRepository.full_name
     );
     spinner.start();
     try {
-      await this.gitAPI.cloneRepo(repoUrl, this.selectedReponsitoryTag?.name);
+      await this.gitAPI.cloneRepo(repoUrl, this.selectedRepositoryTag?.name);
       spinner.stop();
-      log.success("下载源码" + this.selectedReponsitory.full_name + "成功");
+      log.success("下载源码" + this.selectedRepository.full_name + "成功");
       this.installDependency();
     } catch (err) {
       printErrorLog(err);
@@ -275,7 +279,7 @@ class DownloadCommand extends Command {
 
   installDependency() {
     const cwd = process.cwd();
-    const fullName = this.selectedReponsitory.full_name;
+    const fullName = this.selectedRepository.full_name;
     if (this.gitAPI.hasPkg(cwd, fullName)) {
       const spinner = ora("installing dependencies");
       spinner.start();
@@ -290,44 +294,27 @@ class DownloadCommand extends Command {
     }
   }
 
-  prevTags() {
+  async prevTags() {
     this.tagPage -= 1;
-    this.getTags();
+    await this.getTags();
   }
 
-  nextTags() {
+  async nextTags() {
     this.tagPage += 1;
-    this.getTags();
+    await this.getTags();
   }
 
-  prevRepos() {
+  async prevRepos() {
     this.page -= 1;
-    this.getRepos();
+    await this.getRepos();
   }
 
-  nextRepos() {
+  async nextRepos() {
     this.page += 1;
-    this.getRepos();
-  }
-
-  async getGitPlatformInstance(gitPlatform) {
-    const platformItem = GitPlatformList.find((r) => r.name === gitPlatform);
-    if (!platformItem) {
-      return await this.getGitPlatform();
-    } else {
-      return new platformItem.value();
-    }
-  }
-
-  async getGitPlatform() {
-    const Platform = await makeList({
-      message: "请选择Git平台",
-      choices: GitPlatformList,
-    });
-    return new Platform();
+    await this.getRepos();
   }
 }
 
-export default function Downloder(program) {
+export default function Downloader(program) {
   return new DownloadCommand(program);
 }

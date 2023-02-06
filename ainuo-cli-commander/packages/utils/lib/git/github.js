@@ -8,11 +8,11 @@ export default class Github extends AbstractGit {
   platform = PLATFORM_GITHUB;
 
   initService() {
-    const serivce = axios.create({
+    const service = axios.create({
       baseURL: BASE_URL,
       timeout: 10 * 1000,
     });
-    serivce.interceptors.request.use(
+    service.interceptors.request.use(
       (config) => {
         config.headers["Authorization"] = `Bearer ${this.token.trim()}`;
         config.headers["Accept"] = `application/vnd.github+json`;
@@ -22,7 +22,7 @@ export default class Github extends AbstractGit {
         return Promise.reject(err);
       }
     );
-    serivce.interceptors.response.use(
+    service.interceptors.response.use(
       (response) => {
         return response.data;
       },
@@ -30,7 +30,7 @@ export default class Github extends AbstractGit {
         return Promise.reject(err);
       }
     );
-    return serivce;
+    return service;
   }
 
   get(url, params, ...options) {

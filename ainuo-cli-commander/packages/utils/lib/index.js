@@ -9,4 +9,4 @@ export {
   PLATFORM_GITEE,
   PLATFORM_GITHUB,
 } from "./cache.js";
-export { Github, Gitee, getPlatform as getGitPlatform } from "./git/index.js";
+export { getGitPlatform } from "./git/index.js";
