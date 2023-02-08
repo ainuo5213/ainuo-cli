@@ -9,4 +9,4 @@ export {
   PLATFORM_GITEE,
   PLATFORM_GITHUB,
 } from "./cache.js";
-export { getGitPlatform } from "./git/index.js";
+export {getGitPlatform, clearCache, getGitOwn, getGitLogin, saveGitLogin, saveGitOwn} from "./git/index.js";

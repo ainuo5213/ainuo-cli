@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PLATFORM_GITHUB } from "../cache.js";
+import {PLATFORM_GITHUB} from "../cache.js";
 import AbstractGit from "./AbstractGit.js";
 
 const BASE_URL = "https://api.github.com";
@@ -100,6 +100,14 @@ export default class Github extends AbstractGit {
         })),
       };
     });
+  }
+
+  getUser() {
+    return this.get('/user')
+  }
+
+  getOrg() {
+    return this.get('/user/orgs')
   }
 
   getRepoUrl(fullName) {

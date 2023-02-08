@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PLATFORM_GITEE } from "../cache.js";
+import {PLATFORM_GITEE} from "../cache.js";
 import AbstractGit from "./AbstractGit.js";
 
 const BASE_URL = "https://gitee.com/api/v5";
@@ -75,6 +75,14 @@ export default class Gitee extends AbstractGit {
         })),
       };
     });
+  }
+
+  getUser() {
+    return this.get('/user')
+  }
+
+  getOrg() {
+    return this.get('/user/orgs')
   }
 
   getRepoUrl(fullName) {

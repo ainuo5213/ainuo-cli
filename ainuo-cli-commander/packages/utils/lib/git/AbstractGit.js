@@ -1,25 +1,38 @@
-import { homedir } from "node:os";
+import {homedir} from "node:os";
 import path from "node:path";
-import {TEMP_HOME_DIR, TEMP_TOKEN_DIR, TEMP_PLATFORM} from "../cache.js";
-import { pathExistsSync } from "path-exists";
+import {TEMP_GIT_LOGIN, TEMP_GIT_OWN, TEMP_HOME_DIR, TEMP_PLATFORM, TEMP_TOKEN_DIR} from "../cache.js";
+import {pathExistsSync} from "path-exists";
 import fse from "fs-extra";
 import {makePassword} from "../inquirer.js";
-import { execaCommand } from "execa";
-import { taobaoMirror } from "../npm.js";
+import {execaCommand} from "execa";
+import {taobaoMirror} from "../npm.js";
 
 function ensureHomeDir() {
   const homeDir = path.join(homedir(), TEMP_HOME_DIR)
   return fse.ensureDir(homeDir)
 }
 
-export function getCachedTokenPath() {
+function getCachedConfiguration(getConfigurationFunction) {
   ensureHomeDir()
-  return path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR);
+  return function (...args) {
+    return getConfigurationFunction.call(this, ...args)
+  }
 }
 
-export function getCachedPlatformPath() {
-  ensureHomeDir()
-  return path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM);
+export const getCachedTokenPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR))
+export const getCachedPlatformPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM))
+export const getCachedGitLoginPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_GIT_LOGIN))
+export const getCachedGitOwnPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_GIT_OWN))
+
+export function clearCache() {
+  const cachedTokenPath = path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR);
+  const cachedPlatformPath = path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM);
+  const cachedGitLoginPath = path.join(homedir(), TEMP_HOME_DIR, TEMP_GIT_LOGIN);
+  const cachedGitOwnPath = path.join(homedir(), TEMP_HOME_DIR, TEMP_GIT_OWN);
+  fse.removeSync(cachedTokenPath)
+  fse.removeSync(cachedPlatformPath)
+  fse.removeSync(cachedGitLoginPath)
+  fse.removeSync(cachedGitOwnPath)
 }
 
 export async function getToken() {
@@ -41,12 +54,23 @@ export function savePlatform(platform) {
 
 export default class AbstractGit {
   token = "";
+
   platform = "";
+
   service = null;
+
   async init() {
     this.token = await getToken();
     savePlatform(this.platform);
     this.serivce = this.initService();
+  }
+
+  getUser() {
+    throw new Error("method getUser must be implemented");
+  }
+
+  getOrg() {
+    throw new Error("method getOrg must be implemented");
   }
 
   initService() {
