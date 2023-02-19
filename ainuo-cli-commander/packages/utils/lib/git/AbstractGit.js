@@ -90,7 +90,19 @@ export default class AbstractGit {
   }
 
   getRepoUrl() {
-    throw new Error("getRepoUrl getReleasedVersions must be implemented");
+    throw new Error("method getReleasedVersions must be implemented");
+  }
+
+  createUserRepository() {
+    throw new Error("method createUserRepository must be implemented");
+  }
+
+  createOrganizationRepository() {
+    throw new Error("method createOrganizationRepository must be implemented");
+  }
+
+  getRepository() {
+    throw new Error("method getRepository must be implemented");
   }
 
   cloneRepo(repoUrl, version) {

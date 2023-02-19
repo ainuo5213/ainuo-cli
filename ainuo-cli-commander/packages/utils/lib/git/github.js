@@ -44,7 +44,7 @@ export default class Github extends AbstractGit {
 
   async searchRepositories(params) {
     const parameters = this.getSearchParams(params);
-    const { total_count, items } = await this.get(
+    const {total_count, items} = await this.get(
       "/search/repositories",
       parameters
     );
@@ -62,7 +62,7 @@ export default class Github extends AbstractGit {
 
   async searchSourceCode(params) {
     const parameters = this.getSearchParams(params);
-    const { total_count, items } = await this.get("/search/code", parameters);
+    const {total_count, items} = await this.get("/search/code", parameters);
     return {
       totalCount: total_count,
       items: items.map((r) => {
@@ -77,7 +77,7 @@ export default class Github extends AbstractGit {
     };
   }
 
-  getSearchParams({ keyWord, language, page, per_page }) {
+  getSearchParams({keyWord, language, page, per_page}) {
     return {
       q: `${keyWord}+language:${language}`,
       order: "desc",
@@ -112,5 +112,35 @@ export default class Github extends AbstractGit {
 
   getRepoUrl(fullName) {
     return `https://github.com/${fullName}.git`;
+  }
+
+  post(url, data, ...options) {
+    return this.serivce({
+      url,
+      data,
+      method: "post",
+      ...options,
+    });
+  }
+
+  createUserRepository(repositoryName) {
+    return this.post('/user/repos', {
+      name: repositoryName
+    })
+  }
+
+  createOrganizationRepository(repositoryName, orgName) {
+    return this.post(`/orgs/${orgName}/repos`, {
+      name: repositoryName
+    })
+  }
+
+  getRepository(own, repoName) {
+    return this.get(`/repos/${own}/${repoName}`).catch(r => {
+      if (r.response.status === 404) {
+        return null
+      }
+      throw new Error(r)
+    })
   }
 }

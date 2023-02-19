@@ -88,4 +88,35 @@ export default class Gitee extends AbstractGit {
   getRepoUrl(fullName) {
     return `https://gitee.com/${fullName}.git`;
   }
+
+  post(url, data, ...options) {
+    return this.serivce({
+      url,
+      data: {
+        access_token: this.token,
+        ...data
+      },
+      method: "post",
+      ...options,
+    });
+  }
+
+  createUserRepository(repositoryName) {
+    return this.post('/user/repos', {
+      name: repositoryName
+    })
+  }
+
+  createOrganizationRepository(repositoryName, orgName) {
+    return this.post(`/orgs/${org}/repos`, {
+      name: repositoryName
+    })
+  }
+
+  getRepository(own, repoName) {
+    return this.get(`/repos/${own}/${repoName}`).then(r => {
+      r.clone_url = r.html_url
+      return r
+    })
+  }
 }
