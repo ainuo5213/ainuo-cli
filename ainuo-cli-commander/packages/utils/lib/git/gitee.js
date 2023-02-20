@@ -117,6 +117,9 @@ export default class Gitee extends AbstractGit {
     return this.get(`/repos/${own}/${repoName}`).then(r => {
       r.clone_url = r.html_url
       return r
+    }).catch(r => {
+      if (r.response.status === 404) return null
+      throw new Error(r)
     })
   }
 }

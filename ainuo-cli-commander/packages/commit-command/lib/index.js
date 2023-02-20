@@ -5,6 +5,7 @@ import {
   getGitOwn,
   getGitPlatform,
   log,
+  makeInput,
   makeList,
   PLATFORM_GITEE,
   saveGitLogin,
@@ -14,6 +15,7 @@ import ora from "ora";
 import fse from 'fs-extra'
 import path from 'node:path'
 import SimpleGit from "simple-git";
+import semver from 'semver'
 
 const REPO_TYPE_USER = 'User'
 const REPO_TYPE_ORGANIZATION = 'Organization'
@@ -51,9 +53,42 @@ class Index extends Command {
     }
     this.gitOwn = gitOwn
     this.gitLogin = gitLogin
+    // 阶段一：创建远程仓库
     const repo = await this.getRemoteRepository()
+
+    // 阶段二：初始化本地仓库
     await this.initLocalRepository(repo)
+
+    // 阶段三：代码自动化提交+版本号
+    await this.commit(repo)
     process.exit();
+  }
+
+  async commit(repo) {
+    await this.getCorrectVersion(repo)
+  }
+
+  async getCorrectVersion(repo) {
+    const remoteBranchList = await this.getRemoteBranchList('release')
+    console.log(remoteBranchList)
+  }
+
+  async getRemoteBranchList(type) {
+    const remoteList = await this.simpleGit.listRemote(['--refs'])
+    let prefix = `refs/tags/${type}/`
+    return remoteList.split('\n').map(r => {
+      const index = r.indexOf(prefix)
+      if (index > -1) {
+        const version = r.slice(index + prefix.length)
+        return semver.valid(version) ? version : ''
+      }
+      return ''
+    }).filter(r => r).sort((a, b) => {
+      if (semver.lte(b, a)) {
+        return a === b ? 0 : -1
+      }
+      return 1
+    })
   }
 
   async initLocalRepository(repo) {
@@ -62,7 +97,7 @@ class Index extends Command {
     const gitInitDirectoryPath = path.join(cwd, '.git')
     this.simpleGit = SimpleGit(cwd)
     if (!fse.existsSync(gitInitDirectoryPath)) {
-      this.simpleGit.init()
+      await this.simpleGit.init()
     }
     const remotes = await this.simpleGit.getRemotes()
     const origin = remotes.find(r => r.name === 'origin')
@@ -71,11 +106,46 @@ class Index extends Command {
     }
     this.createGitIgnore()
     const masterBranch = this.gitAPI.platform === PLATFORM_GITEE ? 'master' : 'main'
-    await this.simpleGit.pull('origin', 'master').catch(err => {
-      if (err.message.indexOf(`couldn't find remote ref master`) >= 0) {
-        log.error('拉取远程分支[' + masterBranch + ']失败')
-      }
-    })
+    const remoteBranches = await this.simpleGit.listRemote(['--refs'])
+    // 存在远程main/master分支，拉取代码
+    if (remoteBranches.indexOf('refs/heads/' + masterBranch) >= 0) {
+      await this.simpleGit.pull('origin', masterBranch).catch(err => {
+        if (err.message.indexOf(`couldn't find remote ref master`) >= 0) {
+          log.warn('拉取远程分支[' + masterBranch + ']失败')
+        }
+      })
+    } else {
+      // 推送代码到远程main/master分支
+      await this.pushRemoteRepository(masterBranch)
+    }
+  }
+
+  async pushRemoteRepository(branchName) {
+    log.info(`推送代码到远程分支->[${branchName}]`)
+    await this.checkNotCommitted()
+    await this.simpleGit.push('origin', branchName)
+    log.success(`推送代码远程分支->${branchName}成功`)
+  }
+
+  async checkNotCommitted() {
+    const status = await this.simpleGit.status()
+    if (status.not_added.length > 0 || status.created.length > 0 || status.deleted.length > 0 || status.modified.length > 0 || status.renamed.length > 0) {
+      await this.simpleGit.add(status.not_added)
+      await this.simpleGit.add(status.created)
+      await this.simpleGit.add(status.deleted)
+      await this.simpleGit.add(status.modified)
+      await this.simpleGit.add(status.renamed)
+      let message = await makeInput({
+        message: '请输入提交注释',
+        validate(value) {
+          return value.length > 0 ? true : "请输入提交注释";
+        }
+      })
+      await this.simpleGit.commit(message)
+      log.info('本地 commit 提交成功')
+    } else {
+      log.info('暂无提交内容')
+    }
   }
 
   createGitIgnore() {
