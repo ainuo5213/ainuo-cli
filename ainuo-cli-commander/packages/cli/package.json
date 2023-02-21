@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/cli-commander",
+  "name": "@ainuo-utils/cli-commander",
   "version": "0.0.0",
   "description": "ainuo's cli commander",
   "author": "ainuo <ainuo@fanruan.com>",
@@ -31,11 +31,11 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuotestgroup/commit-command": "^0.0.0",
-    "@ainuotestgroup/download-command": "^0.0.0",
-    "@ainuotestgroup/init-command": "^0.0.0",
-    "@ainuotestgroup/lint-command": "^0.0.0",
-    "@ainuotestgroup/utils": "^0.0.0",
+    "@ainuo-utils/commit-command": "^0.0.0",
+    "@ainuo-utils/download-command": "^0.0.0",
+    "@ainuo-utils/init-command": "^0.0.0",
+    "@ainuo-utils/lint-command": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.0",
     "chalk": "^5.1.2",
     "commander": "^9.4.1",
     "dirname-filename-esm": "^1.1.1",

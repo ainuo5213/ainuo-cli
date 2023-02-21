@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/init-command",
+  "name": "@ainuo-utils/init-command",
   "version": "0.0.0",
   "description": "init command",
   "author": "ainuo <ainuo@fanruan.com>",
@@ -27,8 +27,8 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuotestgroup/command": "^0.0.0",
-    "@ainuotestgroup/utils": "^0.0.0",
+    "@ainuo-utils/command": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.0",
     "ejs": "^3.1.8",
     "execa": "^6.1.0",
     "fs-extra": "^11.1.0",

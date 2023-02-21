@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/download-command",
+  "name": "@ainuo-utils/download-command",
   "version": "0.0.0",
   "description": "ainuo5213's source code downloader",
   "author": "孙永刚 <1660998482@qq.com>",
@@ -25,7 +25,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@ainuotestgroup/command": "^0.0.0",
+    "@ainuo-utils/command": "^0.0.0",
     "ora": "^6.1.2"
   }
 }

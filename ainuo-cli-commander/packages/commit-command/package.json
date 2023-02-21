@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/commit-command",
+  "name": "@ainuo-utils/commit-command",
   "version": "0.0.0",
   "description": "auto commit code",
   "author": "孙永刚 <1660998482@qq.com>",
@@ -24,8 +24,8 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuotestgroup/command": "^0.0.0",
-    "@ainuotestgroup/utils": "^0.0.0",
+    "@ainuo-utils/command": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.0",
     "execa": "^7.0.0",
     "fs-extra": "^11.1.0",
     "ora": "^6.1.2",

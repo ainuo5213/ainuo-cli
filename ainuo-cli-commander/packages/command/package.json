@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/command",
+  "name": "@ainuo-utils/command",
   "version": "0.0.0",
   "description": "command ",
   "author": "ainuo <ainuo@fanruan.com>",
@@ -27,7 +27,7 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuotestgroup/utils": "^0.0.0"
+    "@ainuo-utils/utils": "^0.0.0"
   },
   "type": "module"
 }

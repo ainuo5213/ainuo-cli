@@ -1,5 +1,5 @@
 {
-  "name": "@ainuotestgroup/lint-command",
+  "name": "@ainuo-utils/lint-command",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "孙永刚 <1660998482@qq.com>",
@@ -25,8 +25,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@ainuotestgroup/command": "^0.0.0",
-    "@ainuotestgroup/utils": "^0.0.0",
+    "@ainuo-utils/command": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.0",
     "eslint": "^8.32.0",
     "execa": "^6.1.0",
     "jest": "^29.4.1",
