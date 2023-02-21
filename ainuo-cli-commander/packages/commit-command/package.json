@@ -35,5 +35,6 @@
     "semver": "^7.3.8",
     "simple-git": "^3.16.1"
   },
-  "type": "module"
+  "type": "module",
+  "gitHead": "69145d69cd66b7d0be03bc2b8a3ca3ad3bee34aa"
 }

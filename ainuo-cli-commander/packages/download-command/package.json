@@ -30,5 +30,6 @@
   "dependencies": {
     "@ainuo-utils/command": "^0.0.0",
     "ora": "^6.1.2"
-  }
+  },
+  "gitHead": "69145d69cd66b7d0be03bc2b8a3ca3ad3bee34aa"
 }
