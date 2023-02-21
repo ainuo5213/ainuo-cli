@@ -2,7 +2,12 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/utils",
+    "packages/command",
+    "packages/lint-command",
+    "packages/init-command",
+    "packages/download-command",
+    "packages/cli"
   ],
   "devDependencies": {
     "lerna": "^6.1.0"
