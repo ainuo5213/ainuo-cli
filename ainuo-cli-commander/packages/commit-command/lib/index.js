@@ -250,7 +250,6 @@ class Index extends Command {
   async getRemoteVersionList(type) {
     const remoteList = await this.simpleGit.listRemote(['--refs'])
     let prefix = `refs/tags/${type}/`
-    console.log(prefix)
     return remoteList.split('\n').map(r => {
       const index = r.indexOf(prefix)
       if (index > -1) {
