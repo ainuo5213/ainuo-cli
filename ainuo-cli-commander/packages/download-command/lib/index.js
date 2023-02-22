@@ -1,13 +1,13 @@
-import Command from "@ainuotestgroup/command";
+import Command from "@ainuo-utils/command";
 import {
-  makeList,
   getGitPlatform,
-  makeInput,
-  PLATFORM_GITHUB,
-  PLATFORM_GITEE,
   log,
+  makeInput,
+  makeList,
+  PLATFORM_GITEE,
+  PLATFORM_GITHUB,
   printErrorLog,
-} from "@ainuotestgroup/utils";
+} from "@ainuo-utils/utils";
 import ora from "ora";
 
 const NEXT_PAGE_VALUE = "${next_page}";

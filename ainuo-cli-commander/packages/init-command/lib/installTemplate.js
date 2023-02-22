@@ -1,6 +1,6 @@
-import { log, makeList, printErrorLog } from "@ainuotestgroup/utils";
+import {log, makeList, printErrorLog} from "@ainuo-utils/utils";
 import fse from "fs-extra";
-import { pathExistsSync } from "path-exists";
+import {pathExistsSync} from "path-exists";
 import path from "node:path";
 import ora from "ora";
 import ejs from "ejs";

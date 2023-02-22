@@ -1,11 +1,11 @@
-import Command from "@ainuotestgroup/command";
-import { ESLint } from "eslint";
+import Command from "@ainuo-utils/command";
+import {ESLint} from "eslint";
 import vueLint from "./eslint/vue.lint.js";
 import reactLint from "./eslint/react.lint.js";
 import normalLint from "./eslint/normal.lint.js";
-import { execaCommandSync } from "execa";
+import {execaCommandSync} from "execa";
 import ora from "ora";
-import { log, printErrorLog, taobaoMirror } from "@ainuotestgroup/utils";
+import {log, printErrorLog, taobaoMirror} from "@ainuo-utils/utils";
 import jest from "jest";
 import path from "node:path";
 import fse from "fs-extra";

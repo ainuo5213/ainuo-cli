@@ -1,4 +1,4 @@
-import Command from "@ainuotestgroup/command";
+import Command from "@ainuo-utils/command";
 import createTemplate from "./createTemplate.js";
 import downloadTemplate from "./downloadTemplate.js";
 import installTemplate from "./installTemplate.js";

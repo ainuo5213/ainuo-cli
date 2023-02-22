@@ -1,8 +1,8 @@
-import { program } from "commander";
+import {program} from "commander";
 import semver from "semver";
 import chalk from "chalk";
 
-import { log } from "@ainuotestgroup/utils";
+import {log} from "@ainuo-utils/utils";
 import pkg from "./pkg.js";
 
 function preAction() {

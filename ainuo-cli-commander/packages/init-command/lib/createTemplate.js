@@ -1,14 +1,7 @@
-import {
-  getLatestVersion,
-  log,
-  makeInput,
-  makeList,
-  printErrorLog,
-  request,
-  TEMP_HOME_DIR,
-} from "@ainuotestgroup/utils";
-import { homedir } from "node:os";
+import {getLatestVersion, log, makeInput, makeList, printErrorLog, request, TEMP_HOME_DIR,} from "@ainuo-utils/utils";
+import {homedir} from "node:os";
 import path from "node:path";
+
 let AVALIABLE_TEMPLATES = [];
 const TEMPLATE_TYPE_PROJECT = "project";
 const TEMPLATE_TYPE_PAGE = "page";

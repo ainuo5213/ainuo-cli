@@ -1,7 +1,7 @@
-import createInitCommand from "@ainuotestgroup/init-command";
-import createDownloadCommand from "@ainuotestgroup/download-command";
-import createLintCommand from "@ainuotestgroup/lint-command";
-import createCommitCommand from "@ainuotestgroup/commit-command";
+import createInitCommand from "@ainuo-utils/init-command";
+import createDownloadCommand from "@ainuo-utils/download-command";
+import createLintCommand from "@ainuo-utils/lint-command";
+import createCommitCommand from "@ainuo-utils/commit-command";
 import "./exception.js";
 
 import createCli from "./cli.js";

@@ -1,9 +1,9 @@
 import path from "node:path";
-import { pathExistsSync } from "path-exists";
+import {pathExistsSync} from "path-exists";
 import fse from "fs-extra";
 import ora from "ora";
-import { printErrorLog } from "@ainuotestgroup/utils";
-import { execaCommand } from "execa";
+import {printErrorLog} from "@ainuo-utils/utils";
+import {execaCommand} from "execa";
 
 function getCacheDir(targetPath) {
   return path.resolve(targetPath, "node_modules");

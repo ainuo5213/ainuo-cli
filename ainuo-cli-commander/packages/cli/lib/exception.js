@@ -1,4 +1,4 @@
-import { log, isDebug, printErrorLog } from "@ainuotestgroup/utils";
+import {printErrorLog} from "@ainuo-utils/utils";
 
 process.on("uncaughtException", (e) => {
   printErrorLog(e);
