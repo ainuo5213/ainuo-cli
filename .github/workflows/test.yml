@@ -1,0 +1,8 @@
+name: learn-github-actions
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hello ainuo5213"
+      - run: echo "${{github.event_name}}"
