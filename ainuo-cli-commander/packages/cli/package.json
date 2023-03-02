@@ -1,6 +1,6 @@
 {
   "name": "@ainuo-utils/cli-commander",
-  "version": "0.0.1",
+  "version": "0.0.1-beta.1",
   "description": "ainuo's cli commander",
   "author": "ainuo <ainuo@fanruan.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",

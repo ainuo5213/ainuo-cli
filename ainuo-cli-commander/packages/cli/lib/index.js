@@ -1,5 +1,5 @@
 import createInitCommand from "@ainuo-utils/init-command";
-import createDownloadCommand from "@ainuo-utils/download-command";
+import createDownloadCommand from "@ainuo-utils/clone-command";
 import createLintCommand from "@ainuo-utils/lint-command";
 import createCommitCommand from "@ainuo-utils/commit-command";
 import createChatCommand from "@ainuo-utils/chat-command";
