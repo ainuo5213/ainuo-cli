@@ -25,8 +25,11 @@
   },
   "dependencies": {
     "@ainuo-utils/command": "^0.0.0",
-    "@ainuo-utils/utils": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.1",
     "ora": "^6.1.2"
   },
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
 }

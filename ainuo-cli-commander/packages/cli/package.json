@@ -1,6 +1,6 @@
 {
   "name": "@ainuo-utils/cli-commander",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ainuo's cli commander",
   "author": "ainuo <ainuo@fanruan.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
@@ -17,9 +17,6 @@
     "lib",
     "bin"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
@@ -36,7 +33,7 @@
     "@ainuo-utils/download-command": "^0.0.0",
     "@ainuo-utils/init-command": "^0.0.0",
     "@ainuo-utils/lint-command": "^0.0.0",
-    "@ainuo-utils/utils": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.1",
     "chalk": "^5.1.2",
     "commander": "^9.4.1",
     "dirname-filename-esm": "^1.1.1",
@@ -53,5 +50,8 @@
     "jest": "^29.3.1"
   },
   "type": "module",
-  "gitHead": "69145d69cd66b7d0be03bc2b8a3ca3ad3bee34aa"
+  "gitHead": "69145d69cd66b7d0be03bc2b8a3ca3ad3bee34aa",
+  "publishConfig": {
+    "access": "public"
+  }
 }
