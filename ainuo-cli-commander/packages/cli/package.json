@@ -30,7 +30,7 @@
   "dependencies": {
     "@ainuo-utils/chat-command": "^0.0.0",
     "@ainuo-utils/commit-command": "^0.0.0",
-    "@ainuo-utils/download-command": "^0.0.0",
+    "@ainuo-utils/clone-command": "^0.0.0",
     "@ainuo-utils/init-command": "^0.0.0",
     "@ainuo-utils/lint-command": "^0.0.0",
     "@ainuo-utils/utils": "^0.0.1",

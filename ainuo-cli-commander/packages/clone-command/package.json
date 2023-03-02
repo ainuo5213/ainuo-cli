@@ -1,5 +1,5 @@
 {
-  "name": "@ainuo-utils/download-command",
+  "name": "@ainuo-utils/clone-command",
   "version": "0.0.0",
   "description": "ainuo5213's source code downloader",
   "author": "孙永刚 <1660998482@qq.com>",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
   },
   "scripts": {
-    "test": "node ./__tests__/download-command.test.js"
+    "test": "node ./__tests__/clone-command.test.js"
   },
   "bugs": {
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
