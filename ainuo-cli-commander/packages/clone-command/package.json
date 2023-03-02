@@ -1,6 +1,6 @@
 {
   "name": "@ainuo-utils/clone-command",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "ainuo5213's source code downloader",
   "author": "孙永刚 <1660998482@qq.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
@@ -28,7 +28,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@ainuo-utils/command": "^0.0.0",
+    "@ainuo-utils/command": "^0.0.1-alpha.0",
     "ora": "^6.1.2"
   },
   "gitHead": "69145d69cd66b7d0be03bc2b8a3ca3ad3bee34aa"
