@@ -2,7 +2,7 @@ import urlJoin from "url-join";
 import axios from "axios";
 import log from "./log.js";
 
-export const taobaoMirror = "https://registry.npmmirror.com";
+export const taobaoMirror = "https://registry.npm.taobao.org";
 
 async function getPackageInfo(packageName) {
   const registry = "https://registry.npmjs.org/";

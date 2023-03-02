@@ -1,0 +1,32 @@
+{
+  "name": "@ainuo-utils/chat-command",
+  "version": "0.0.0",
+  "description": "chat with chat-gpt",
+  "author": "ainuo <ainuo@fanruan.com>",
+  "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ainuo5213/ainuo-cli.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/chat-command.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/ainuo5213/ainuo-cli/issues"
+  },
+  "dependencies": {
+    "@ainuo-utils/command": "^0.0.0",
+    "@ainuo-utils/utils": "^0.0.0",
+    "ora": "^6.1.2"
+  },
+  "type": "module"
+}

@@ -31,6 +31,7 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
+    "@ainuo-utils/chat-command": "^0.0.0",
     "@ainuo-utils/commit-command": "^0.0.0",
     "@ainuo-utils/download-command": "^0.0.0",
     "@ainuo-utils/init-command": "^0.0.0",

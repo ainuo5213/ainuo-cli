@@ -11,3 +11,5 @@ export const PLATFORM_GITEE = "gitee";
 export const TEMP_GIT_OWN = ".git_own";
 
 export const TEMP_GIT_LOGIN = ".git_login";
+
+export const TEMP_CHAT_API_KEY = ".chat_key";

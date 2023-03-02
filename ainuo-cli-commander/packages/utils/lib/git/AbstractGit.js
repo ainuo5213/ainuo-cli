@@ -6,18 +6,10 @@ import fse from "fs-extra";
 import {makePassword} from "../inquirer.js";
 import {execaCommand} from "execa";
 import {taobaoMirror} from "../npm.js";
+import {getCachedConfiguration} from '../path.js'
 
-function ensureHomeDir() {
-  const homeDir = path.join(homedir(), TEMP_HOME_DIR)
-  return fse.ensureDir(homeDir)
-}
 
-function getCachedConfiguration(getConfigurationFunction) {
-  ensureHomeDir()
-  return function (...args) {
-    return getConfigurationFunction.call(this, ...args)
-  }
-}
+
 
 export const getCachedTokenPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_TOKEN_DIR))
 export const getCachedPlatformPath = getCachedConfiguration(() => path.join(homedir(), TEMP_HOME_DIR, TEMP_PLATFORM))

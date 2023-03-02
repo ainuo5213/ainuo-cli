@@ -10,3 +10,4 @@ export {
   PLATFORM_GITHUB,
 } from "./cache.js";
 export {getGitPlatform, clearCache, getGitOwn, getGitLogin, saveGitLogin, saveGitOwn} from "./git/index.js";
+export { clearChatCache, saveApiKey, getApiKey, ChatGpt } from './chat.js'
