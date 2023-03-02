@@ -1,6 +1,6 @@
 {
   "name": "@ainuo-utils/chat-command",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "chat with chat-gpt",
   "author": "ainuo <ainuo@fanruan.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",

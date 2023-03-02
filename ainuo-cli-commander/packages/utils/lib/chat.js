@@ -41,8 +41,9 @@ export class ChatGpt {
 
     async send(question) {
         const completion = await this.client.createCompletion({
-            model: "text-davinci-003",
+            model: this.model,
             prompt: question,
+            max_tokens: 3072
         });
         return completion.data.choices[0].text
     }
