@@ -1,6 +1,6 @@
 {
   "name": "@ainuo-utils/cli-commander",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.3",
   "description": "ainuo's cli commander",
   "author": "ainuo <ainuo@fanruan.com>",
   "homepage": "https://github.com/ainuo5213/ainuo-cli#readme",
@@ -28,7 +28,7 @@
     "url": "https://github.com/ainuo5213/ainuo-cli/issues"
   },
   "dependencies": {
-    "@ainuo-utils/chat-command": "^0.0.1-alpha.1",
+    "@ainuo-utils/chat-command": "^0.0.1-alpha.3",
     "@ainuo-utils/clone-command": "^0.0.1-alpha.0",
     "@ainuo-utils/commit-command": "^0.0.1-alpha.0",
     "@ainuo-utils/init-command": "^0.0.1-alpha.0",

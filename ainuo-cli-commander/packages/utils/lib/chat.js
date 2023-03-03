@@ -43,7 +43,7 @@ export class ChatGpt {
         const completion = await this.client.createCompletion({
             model: this.model,
             prompt: question,
-            max_tokens: 3072
+            max_tokens: 2048
         });
         return completion.data.choices[0].text
     }
